@@ -3,13 +3,15 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
-
+// import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 export const SignInForm = () => {
     const defaultValues = {
         email: '',
         password:'',
       };
     const [formValues, setFormValues] = useState(defaultValues)
+    // const navigate = useNavigate()
     const handleInputChange = (e: any) => {
         const { name, value} = e.target;
         setFormValues({
@@ -19,7 +21,13 @@ export const SignInForm = () => {
     }
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        console.log(formValues);
+        let {email , password } = formValues
+        axios.post('http://localhost:9000/register', {email, password})
+        .then((result) => {if(result.data.status === 'ok'){
+            //everything went fine
+        }else{
+            alert(result.data.error)
+        }})
       };
 
     return(

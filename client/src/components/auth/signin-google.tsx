@@ -8,6 +8,7 @@ import {
     } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
+
 export const Auth = () => {
     const [auth, setAuth] = useState(false || window.localStorage.getItem('auth') === 'true')
     const [token, setToken] = useState('')
