@@ -116,7 +116,8 @@ app.get('/create_link_token', async function (request, response) {
         console.log(error)
       }
   });
-
+import { TransactionsGetRequest } from 'plaid'
+const moment = require('moment');
 app.post('/plaid_token_exchange', async (req: Request, res: Response) => {
   const { public_token } = req.body
   try{
@@ -125,15 +126,26 @@ app.post('/plaid_token_exchange', async (req: Request, res: Response) => {
 
     const accounts_response = await client.accountsGet({access_token})
     console.log('-------- ACCOUNT RESPONSE ----------')
-    console.log(accounts_response)
+    console.log(accounts_response.data)
     
-    const identityResponse = await client.identityGet({access_token})
+    const startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
+    const endDate = moment().format('YYYY-MM-DD');
+    const configs = {
+      access_token: access_token,
+      start_date: startDate,
+      end_date: endDate,
+      options: {
+        count: 250,
+        offset: 0,
+      },
+    };
+    const identityResponse = await client.transactionsGet(configs)
     console.log('--------- Identity Response --------')
-    console.log(identityResponse)
+    console.log(identityResponse.data)
     
     const transactioneResponse = await client.accountsBalanceGet({access_token})
     console.log('--------- Accounts Balance Response --------')
-    console.log(transactioneResponse.data.accounts)
+    console.log(transactioneResponse.data)
 
   } catch(error){
     console.log(error)
