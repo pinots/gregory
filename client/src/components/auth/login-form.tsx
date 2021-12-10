@@ -5,8 +5,10 @@ import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 // import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useNavigate } from 'react-router';
 
 export const Login = () => {
+    let navigate = useNavigate()
     const defaultValues = {
         email: '',
         password:'',
@@ -26,6 +28,7 @@ export const Login = () => {
         axios.post('http://localhost:9000/login', {email, password})
         .then((result) => {if(result.data.status === 'ok'){
             console.log('Got the token: ', result.data.data)
+            navigate('/plaid')
         }else{
             alert(result.data.error)
         }})
